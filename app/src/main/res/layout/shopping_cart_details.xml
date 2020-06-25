@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.banat_travel_app.Activity_presentation"
+    android:background="@drawable/yellow_blue_gradient">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/shopping_cart_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/shopping_cart_details_location"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_layout"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textAlignment="center"
+            android:layout_marginTop="30dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/shopping_cart_details_from_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintRight_toRightOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintTop_toBottomOf="@+id/shopping_cart_details_location">
+
+            <TextView
+                android:id="@+id/shopping_cart_details_from_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shopping_cart_details_from"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_from_layout"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_from_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_from_layout"/>
+
+            <TextView
+                android:id="@+id/shopping_cart_details_from"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toRightOf="@+id/shopping_cart_details_from_text"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_from_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_from_layout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/shopping_cart_details_to_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintTop_toBottomOf="@+id/shopping_cart_details_from_layout">
+
+            <TextView
+                android:id="@+id/shopping_cart_details_to_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shopping_cart_details_to"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_to_layout"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_to_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_to_layout"/>
+
+            <TextView
+                android:id="@+id/shopping_cart_details_to"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toRightOf="@+id/shopping_cart_details_to_text"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_to_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_to_layout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/shopping_cart_details_price_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintTop_toBottomOf="@+id/shopping_cart_details_to_layout">
+
+            <TextView
+                android:id="@+id/shopping_cart_details_price_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shopping_cart_details_price_person"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_price_layout"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_price_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_price_layout"/>
+
+            <TextView
+                android:id="@+id/shopping_cart_details_price"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toRightOf="@+id/shopping_cart_details_price_text"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_price_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_price_layout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/shopping_cart_details_duration_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintTop_toBottomOf="@+id/shopping_cart_details_price_layout">
+
+            <TextView
+                android:id="@+id/shopping_cart_details_duration_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shopping_cart_details_duration"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_duration_layout"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_duration_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_duration_layout"/>
+
+            <TextView
+                android:id="@+id/shopping_cart_details_duration"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toRightOf="@+id/shopping_cart_details_duration_text"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_duration_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_duration_layout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/shopping_cart_details_persons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintTop_toBottomOf="@+id/shopping_cart_details_duration_layout">
+
+            <TextView
+                android:id="@+id/shopping_cart_details_persons_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shopping_cart_details_number_of_persons"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_persons_layout"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_persons_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_persons_layout"/>
+
+            <EditText
+                android:id="@+id/shopping_cart_details_persons"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toRightOf="@+id/shopping_cart_details_persons_text"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_persons_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_persons_layout"
+                android:inputType="number" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/shopping_cart_details_total_price_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintTop_toBottomOf="@+id/shopping_cart_details_persons_layout">
+
+            <TextView
+                android:id="@+id/shopping_cart_details_total_price_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shopping_cart_details_price"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_total_price_layout"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_total_price_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_total_price_layout"/>
+
+            <TextView
+                android:id="@+id/shopping_cart_details_total_price"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toRightOf="@+id/shopping_cart_details_total_price_text"
+                app:layout_constraintTop_toTopOf="@+id/shopping_cart_details_total_price_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_total_price_layout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/shopping_cart_details_buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/shopping_cart_details_layout"
+            app:layout_constraintRight_toRightOf="@+id/shopping_cart_details_layout">
+
+            <Button
+                android:id="@+id/shopping_cart_details_save"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:background="@drawable/blue_gradient"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_margin="5dp"
+                android:text="@string/shopping_cart_details_save"/>
+
+            <Button
+                android:id="@+id/shopping_cart_details_select_from_date"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shopping_cart_details_select_date"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:background="@drawable/blue_gradient"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_margin="5dp"/>
+
+            <Button
+                android:id="@+id/shopping_cart_details_remove"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:background="@drawable/blue_gradient"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_margin="5dp"
+                android:text="@string/shopping_cart_details_remove"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

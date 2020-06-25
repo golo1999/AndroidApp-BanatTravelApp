@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/area_selector_header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/firstColor"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/area_selector_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/secondColor"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="@+id/area_selector_header"
+            app:layout_constraintTop_toTopOf="@+id/area_selector_header"
+            app:layout_constraintBottom_toBottomOf="@+id/area_selector_header"
+            android:layout_marginStart="10dp"/>
+
+        <ImageView
+            android:id="@+id/area_selector_shopping_bag"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/shopping_bag"
+            app:layout_constraintRight_toLeftOf="@+id/area_selector_logout"
+            app:layout_constraintBottom_toBottomOf="@+id/area_selector_header"
+            app:layout_constraintTop_toTopOf="@+id/area_selector_header"
+            android:layout_marginEnd="10dp"/>
+
+        <ImageView
+            android:id="@+id/area_selector_logout"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/logout"
+            app:layout_constraintRight_toRightOf="@+id/area_selector_header"
+            app:layout_constraintBottom_toBottomOf="@+id/area_selector_header"
+            app:layout_constraintTop_toTopOf="@+id/area_selector_header"
+            android:layout_marginEnd="5dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/area_selector_listview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/area_selector_header"
+        android:background="@drawable/blue_gradient">
+
+        <ListView
+            android:id="@+id/area_selector_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null">
+
+        </ListView>
+
+    </LinearLayout>
+
+</RelativeLayout>

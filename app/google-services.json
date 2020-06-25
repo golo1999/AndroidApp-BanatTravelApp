@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "365855067960",
+    "firebase_url": "https://banattravelapp.firebaseio.com",
+    "project_id": "banattravelapp",
+    "storage_bucket": "banattravelapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365855067960:android:4a3661dd203e39f7cc3bcd",
+        "android_client_info": {
+          "package_name": "com.example.a2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "365855067960-7tuignq8aq2ls7r2rk4fie2ol0pfe01s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.a2",
+            "certificate_hash": "d52006e1093287c5e6da838e69629a5d48becb79"
+          }
+        },
+        {
+          "client_id": "365855067960-e5e5qbsif3chq4ujduqcbg72nta05go3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYu8JaOZm3YMj9_1Tw68bnvFEL0qI8DBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "365855067960-e5e5qbsif3chq4ujduqcbg72nta05go3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365855067960:android:58b4f03f700d4597cc3bcd",
+        "android_client_info": {
+          "package_name": "com.example.banat_travel_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "365855067960-e5e5qbsif3chq4ujduqcbg72nta05go3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYu8JaOZm3YMj9_1Tw68bnvFEL0qI8DBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "365855067960-e5e5qbsif3chq4ujduqcbg72nta05go3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

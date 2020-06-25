@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:id="@+id/area_selector_cardDesign"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/area_selector_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/area_selector_cardLayout"
+            android:background="@drawable/yellow_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/area_selector_cardImage"
+                android:scaleType="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:layout_constraintLeft_toLeftOf="@+id/area_selector_cardLayout"
+                app:layout_constraintRight_toRightOf="@+id/area_selector_cardLayout"
+                app:layout_constraintTop_toBottomOf="@+id/area_selector_cardPrice"
+                app:layout_constraintBottom_toBottomOf="@+id/area_selector_cardLayout"/>
+
+            <TextView
+                android:id="@+id/area_selector_cardTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:textAlignment="center"
+                app:layout_constraintTop_toTopOf="@+id/area_selector_cardLayout"
+                app:layout_constraintRight_toRightOf="@+id/area_selector_cardLayout"
+                app:layout_constraintLeft_toLeftOf="@+id/area_selector_cardLayout"/>
+
+            <TextView
+                android:id="@+id/area_selector_cardPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                app:layout_constraintRight_toRightOf="@+id/area_selector_cardLayout"
+                app:layout_constraintLeft_toLeftOf="@+id/area_selector_cardLayout"
+                app:layout_constraintTop_toBottomOf="@+id/area_selector_cardTitle"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
