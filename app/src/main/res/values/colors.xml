@@ -5,5 +5,8 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="firstColor">#11589F</color>
     <color name="secondColor">#FFD662</color>
-    <color name="white"> #FFFFFF </color>
+    <color name="white">#ffffff</color>
+    <color name="silver">#c0c0c0</color>
+    <color name="primary_color">#f4b41a</color>
+    <color name="secondary_color">#143d59</color>
 </resources>

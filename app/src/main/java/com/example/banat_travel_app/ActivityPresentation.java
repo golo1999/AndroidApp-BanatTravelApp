@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class Activity_presentation extends AppCompatActivity // clasa in care se desfasoara prezentarea 'activitatii' selectate in activitatea 'Activities'
+public class ActivityPresentation extends AppCompatActivity // clasa in care se desfasoara prezentarea 'activitatii' selectate in activitatea 'Activities'
 {
 
     private TextView location_name, location_description;

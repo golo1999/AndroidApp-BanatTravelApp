@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.banat_travel_app.StartingPart.Activity.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -176,7 +177,7 @@ public class Activities extends AppCompatActivity // clasa in care se desfasoara
             public void onClick(View v)
             {
                 fbAuth.signOut();
-                Intent intent=new Intent(Activities.this, Login.class);
+                Intent intent=new Intent(Activities.this, LoginActivity.class);
                 finishAffinity();
                 startActivity(intent);
             }
@@ -187,7 +188,7 @@ public class Activities extends AppCompatActivity // clasa in care se desfasoara
             @Override
             public void onClick(View v)
             {
-                Intent intent=new Intent(Activities.this, Shopping_cart.class);
+                Intent intent=new Intent(Activities.this, ShoppingCart.class);
                 startActivity(intent);
             }
         });
@@ -201,7 +202,7 @@ public class Activities extends AppCompatActivity // clasa in care se desfasoara
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) // trimitem activitatii 'Activity_presentation' numele locatiei selectate
             {
                 Bundle extras=getIntent().getExtras();
-                Intent intent=new Intent(Activities.this, Activity_presentation.class);
+                Intent intent=new Intent(Activities.this, ActivityPresentation.class);
                 if(extras!=null)
                 {
                     selected_location=extras.getString("location");
@@ -535,10 +536,10 @@ public class Activities extends AppCompatActivity // clasa in care se desfasoara
     private void addToShoppingCart() // metoda de adaugare in cosul de cumparaturi (folosind Firebase)
     {
         Bundle extras=getIntent().getExtras();
-        Activity_details details; // definim un obiect al clasei definite de mine, 'Activity_details', obiect ce va fi adaugat in baza de date cu actualizare in timp real a Firebase
+        ActivityDetails details; // definim un obiect al clasei definite de mine, 'Activity_details', obiect ce va fi adaugat in baza de date cu actualizare in timp real a Firebase
         if(extras!=null)
         {
-            details=new Activity_details(extras.getString("location"), "", "", price, days, 1); // instantierea obiectului ce va fi adaugat in baza de date
+            details=new ActivityDetails(extras.getString("location"), "", "", price, days, 1); // instantierea obiectului ce va fi adaugat in baza de date
             String reservation="Reservation for "+details.getLocation(); // numele fiecarei 'activitati' va fi trecut in baza de date drept 'Reservation for...' (de exemplu, Reservation for Semenic area)
             if(fbAuth.getUid()!=null) // daca utilizatorul are un ID unic creat in partea de autentificare din cadrul Firebase
             {

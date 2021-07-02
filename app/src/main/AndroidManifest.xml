@@ -11,21 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Shopping_cart_details_from_date"></activity>
-        <activity android:name=".Shopping_cart_details" />
-        <activity android:name=".County_selector" />
-        <activity android:name=".Area_selector" />
-        <activity android:name=".Activity_presentation" />
-        <activity android:name=".Activities" />
-        <activity android:name=".Signup" />
-        <activity android:name=".Shopping_cart" />
-        <activity android:name=".Login">
+        <activity android:name=".MainPart.MainActivity" />
+        <activity android:name=".StartingPart.Activity.ForgotPasswordActivity" />
+        <activity android:name=".StartingPart.Activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".StartingPart.Activity.LoginActivity" />
+        <activity android:name=".ShoppingCartDetailsFromDate" />
+        <activity android:name=".ShoppingCartDetails" />
+        <activity android:name=".CountySelector" />
+        <activity android:name=".Area_selector" />
+        <activity android:name=".ActivityPresentation" />
+        <activity android:name=".Activities" />
+        <activity android:name=".StartingPart.Activity.RegisterActivity" />
+        <activity android:name=".ShoppingCart" />
+        <activity android:name=".StartingPart.Activity.StartingActivity" />
     </application>
 
 </manifest>

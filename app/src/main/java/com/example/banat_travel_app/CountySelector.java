@@ -13,9 +13,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.banat_travel_app.StartingPart.Activity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class County_selector extends AppCompatActivity // clasa in care se desfasoara activitatea de selectare a judetului
+public class CountySelector extends AppCompatActivity // clasa in care se desfasoara activitatea de selectare a judetului
 {
 
     private String[] counties={"Caraș-Severin County", "Mehedinți County", "Timiș County", "Vojvodina County"};
@@ -52,7 +53,7 @@ public class County_selector extends AppCompatActivity // clasa in care se desfa
             public void onClick(View v)
             {
                 fbAuth.signOut(); // metoda FireBase de sign out
-                Intent intent=new Intent(County_selector.this, Login.class);
+                Intent intent=new Intent(CountySelector.this, LoginActivity.class);
                 finishAffinity(); // incheiem toate activitatile prezente in stiva
                 startActivity(intent); // ne intoarcem la log in
             }
@@ -63,7 +64,7 @@ public class County_selector extends AppCompatActivity // clasa in care se desfa
             @Override
             public void onClick(View v)
             {
-                Intent intent=new Intent(County_selector.this, Shopping_cart.class);
+                Intent intent=new Intent(CountySelector.this, ShoppingCart.class);
                 startActivity(intent);
             }
         });
@@ -76,7 +77,7 @@ public class County_selector extends AppCompatActivity // clasa in care se desfa
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Intent intent=new Intent(County_selector.this, Area_selector.class);
+                Intent intent=new Intent(CountySelector.this, Area_selector.class);
                 county_name=counties[position]; // trimitem numele judetului selectat activitatii de selectare a zonelor specifice din fiecare judet, pentru a putea genera urmatoarea activitate
                 intent.putExtra("county_name", county_name); // trimitem numele judetului selectat
                 startActivity(intent);

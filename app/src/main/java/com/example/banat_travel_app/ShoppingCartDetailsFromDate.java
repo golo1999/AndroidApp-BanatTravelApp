@@ -18,12 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Shopping_cart_details_from_date extends AppCompatActivity // clasa ce seteaza data de inceput si data de sfarsit a rezervarii
+public class ShoppingCartDetailsFromDate extends AppCompatActivity // clasa ce seteaza data de inceput si data de sfarsit a rezervarii
 {
 
     private FirebaseAuth fbAuth;
     private DatabaseReference myRef;
-    private Activity_details details;
+    private ActivityDetails details;
     private String activity_location, from_date, to_date, activity_duration;
     private Button save;
     private Bundle extras;

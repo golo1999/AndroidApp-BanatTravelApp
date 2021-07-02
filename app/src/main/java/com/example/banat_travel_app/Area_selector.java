@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.banat_travel_app.StartingPart.Activity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Area_selector extends AppCompatActivity // clasa in care se desfasoara activitatea de selectare a zonei specifice fiecarui judet
@@ -87,7 +88,7 @@ public class Area_selector extends AppCompatActivity // clasa in care se desfaso
             @Override
             public void onClick(View v)
             {
-                Intent intent=new Intent(Area_selector.this, Shopping_cart.class);
+                Intent intent=new Intent(Area_selector.this, ShoppingCart.class);
                 startActivity(intent);
             }
         });
@@ -98,7 +99,7 @@ public class Area_selector extends AppCompatActivity // clasa in care se desfaso
             public void onClick(View v)
             {
                 fbAuth.signOut();
-                Intent intent=new Intent(Area_selector.this, Login.class);
+                Intent intent=new Intent(Area_selector.this, LoginActivity.class);
                 finishAffinity();
                 startActivity(intent);
             }

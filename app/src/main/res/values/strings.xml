@@ -6,9 +6,11 @@
     <string name="login_no_account"> Don\'t have an account? </string>
     <string name="login_button"> Log in </string>
     <string name="signup_welcome"> Create a new account </string>
-    <string name="signup_button"> Sign up </string>
+    <string name="signup_button"> Register </string>
     <string name="signup_account"> Already have an account? </string>
     <string name="signup_email"> Email </string>
+    <string name="signup_first_name">First name</string>
+    <string name="signup_last_name">Last name</string>
     <string name="signup_password"> Password </string>
     <string name="signup_error1"> Email already exists </string>
     <string name="signup_error2"> Email and password should not be empty </string>
@@ -75,6 +77,7 @@
     <string name="V_Zrenjanin_famous"> Zrenjanin is the city of bridges, youth, sports, culture, interesting architecture and people of more than twenty nationalities. The quiet little town on the banks of the Bega combines the nostalgic charm of the time when the "portion" of freedom of small traffic with the air of a handy holiday destination came from the Serbs. </string>
     <string name="book_now"> Book now </string>
     <string name="checkout"> Checkout </string>
+    <string name="incorrect_credentials">Incorrect credentials</string>
     <string name="shopping_cart_page"> Shopping cart </string>
     <string name="shopping_cart_details_from"> From </string>
     <string name="shopping_cart_details_to"> To </string>
@@ -87,4 +90,6 @@
     <string name="shopping_cart_details_remove"> Remove </string>
     <string name="shopping_cart_details_select_from_date_select"> Select from date </string>
     <string name="shopping_cart_details_select_from_date_save"> Save date </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

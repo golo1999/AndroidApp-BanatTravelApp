@@ -3,24 +3,22 @@ package com.example.banat_travel_app;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Activity_details implements Parcelable // clasa creata de mine (implementeaza Parcelable pentru ca obiectul sau sa poata fi trimis intre activitati)
-{
+// clasa creata de mine (implementeaza Parcelable pentru ca obiectul sau sa poata fi trimis intre activitati)
+public class ActivityDetails implements Parcelable {
     private String Location, From, To, Price;
     private Integer Duration, Persons, TotalPrice;
 
-    public Activity_details(String location, String from, String to, String price, Integer duration, Integer persons)
-    {
-        Location=location;
-        From=from;
-        To=to;
-        Price=price;
-        Duration=duration;
-        Persons=persons;
-        TotalPrice=Integer.parseInt(price)*persons;
+    public ActivityDetails(String location, String from, String to, String price, Integer duration, Integer persons) {
+        Location = location;
+        From = from;
+        To = to;
+        Price = price;
+        Duration = duration;
+        Persons = persons;
+        TotalPrice = Integer.parseInt(price) * persons;
     }
 
-    protected Activity_details(Parcel in)
-    {
+    protected ActivityDetails(Parcel in) {
         Location = in.readString();
         From = in.readString();
         To = in.readString();
@@ -39,105 +37,85 @@ public class Activity_details implements Parcelable // clasa creata de mine (imp
         else TotalPrice = in.readInt();
     }
 
-    public static final Creator<Activity_details> CREATOR = new Creator<Activity_details>()
-    {
+    public static final Creator<ActivityDetails> CREATOR = new Creator<ActivityDetails>() {
         @Override
-        public Activity_details createFromParcel(Parcel in)
-        {
-            return new Activity_details(in);
+        public ActivityDetails createFromParcel(Parcel in) {
+            return new ActivityDetails(in);
         }
 
         @Override
-        public Activity_details[] newArray(int size)
-        {
-            return new Activity_details[size];
+        public ActivityDetails[] newArray(int size) {
+            return new ActivityDetails[size];
         }
     };
 
-    public String getLocation()
-    {
+    public String getLocation() {
         return Location;
     }
 
-    public void setLocation(String location)
-    {
+    public void setLocation(String location) {
         Location = location;
     }
 
-    public String getFrom()
-    {
+    public String getFrom() {
         return From;
     }
 
-    public void setFrom(String from)
-    {
+    public void setFrom(String from) {
         From = from;
     }
 
-    public String getTo()
-    {
+    public String getTo() {
         return To;
     }
 
-    public void setTo(String to)
-    {
+    public void setTo(String to) {
         To = to;
     }
 
-    public String getPrice()
-    {
+    public String getPrice() {
         return Price;
     }
 
-    public void setPrice(String price)
-    {
+    public void setPrice(String price) {
         Price = price;
     }
 
-    public Integer getDuration()
-    {
+    public Integer getDuration() {
         return Duration;
     }
 
-    public void setDuration(Integer duration)
-    {
+    public void setDuration(Integer duration) {
         Duration = duration;
     }
 
-    public Integer getPersons()
-    {
+    public Integer getPersons() {
         return Persons;
     }
 
-    public void setPersons(Integer persons)
-    {
+    public void setPersons(Integer persons) {
         Persons = persons;
     }
 
-    public Integer getTotalPrice()
-    {
+    public Integer getTotalPrice() {
         return TotalPrice;
     }
 
-    public void setTotalPrice()
-    {
-        TotalPrice = Integer.parseInt(this.Price)*this.Persons;
+    public void setTotalPrice() {
+        TotalPrice = Integer.parseInt(this.Price) * this.Persons;
     }
 
-    public Activity_details()
-    {
+    public ActivityDetails() {
 
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(Location);
         dest.writeString(From);
         dest.writeString(To);

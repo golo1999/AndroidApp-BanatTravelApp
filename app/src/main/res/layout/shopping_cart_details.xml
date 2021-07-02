@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.banat_travel_app.Activity_presentation"
+    tools:context="com.example.banat_travel_app.ActivityPresentation"
     android:background="@drawable/yellow_blue_gradient">
 
     <androidx.constraintlayout.widget.ConstraintLayout

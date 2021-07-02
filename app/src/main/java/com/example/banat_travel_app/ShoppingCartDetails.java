@@ -21,7 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Shopping_cart_details extends AppCompatActivity //
+public class ShoppingCartDetails extends AppCompatActivity //
 {
 
     private TextView location, price, duration, total_price, from, to;
@@ -30,7 +30,7 @@ public class Shopping_cart_details extends AppCompatActivity //
     private FirebaseAuth fbAuth;
     private EditText persons;
     private Button save, remove, date_select_button;
-    private Activity_details details;
+    private ActivityDetails details;
     private final Integer request_code=1;
 
     @Override
@@ -96,7 +96,7 @@ public class Shopping_cart_details extends AppCompatActivity //
                             myRef.child(activity_location).child("persons").setValue(Integer.parseInt(numberOfPersons));
                             myRef.child(activity_location).child("totalPrice").setValue(Integer.parseInt(numberOfPersons)*Integer.parseInt(details.getPrice())); // afiseaza mereu pretul de dinainte (nu este actualizat)
                         }
-                        Toast.makeText(Shopping_cart_details.this, "Reservation details have been saved", Toast.LENGTH_SHORT).show(); // afisam mesajul ca salvarea s-a realizat cu succes
+                        Toast.makeText(ShoppingCartDetails.this, "Reservation details have been saved", Toast.LENGTH_SHORT).show(); // afisam mesajul ca salvarea s-a realizat cu succes
                         intent.putExtra("from_date", from.getText()); // trimitem activitatii 'Shopping_cart' cele doua date: de inceput si de final si oprim activitatea aceasta, revenind la cosul de cumparaturi
                         intent.putExtra("to_date", to.getText());
                         setResult(RESULT_OK, intent);
@@ -116,7 +116,7 @@ public class Shopping_cart_details extends AppCompatActivity //
                             {
                                 if(task.isSuccessful())
                                 {
-                                    Toast.makeText(Shopping_cart_details.this, "Reservation removed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ShoppingCartDetails.this, "Reservation removed", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }
                             }
@@ -129,7 +129,7 @@ public class Shopping_cart_details extends AppCompatActivity //
                     @Override
                     public void onClick(View v) // mergem in activitatea 'Shopping_cart_details_from_date', de la care primim cele doua date (in cazul in care le-am setat)
                     {
-                        Intent intent=new Intent(Shopping_cart_details.this, Shopping_cart_details_from_date.class);
+                        Intent intent=new Intent(ShoppingCartDetails.this, ShoppingCartDetailsFromDate.class);
                         intent.putExtra("reservation_object_2", details); // trimitem obiectul rezervarii, numele rezervarii, precum si durata acesteia
                         intent.putExtra("activity_location", activity_location);
                         intent.putExtra("activity_duration", details.getDuration().toString());
@@ -170,7 +170,7 @@ public class Shopping_cart_details extends AppCompatActivity //
             }
             else if(resultCode==RESULT_CANCELED) // daca nu am apasat pe salvare in activitatea 'Shopping_cart_details_from_date' si am apasat pe butonul de inapoi
             {
-                Toast.makeText(Shopping_cart_details.this, "The changes have not been saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShoppingCartDetails.this, "The changes have not been saved", Toast.LENGTH_SHORT).show();
             }
         }
     }
