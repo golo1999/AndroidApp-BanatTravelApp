@@ -1,6 +1,6 @@
 package com.example.banat_travel_app.StartingPart.Activity;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
+    private SharedPreferences preferences;
+    private final FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+    private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private StartingPartViewModel viewModel;
     private TextView registerLogin;
     private EditText firstNameField;
@@ -28,8 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText emailField;
     private EditText passwordField;
     private Button signUpButton;
-    private final FirebaseAuth fbAuth = FirebaseAuth.getInstance();
-    private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setVariables() {
+        preferences = getSharedPreferences(MyCustomVariables.getSharedPreferencesFileName(), MODE_PRIVATE);
         viewModel = new ViewModelProvider(this).get(StartingPartViewModel.class);
         registerLogin = findViewById(R.id.register_login);
         firstNameField = findViewById(R.id.register_first_name);
@@ -70,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
     // metoda de validare a inregistrarii
     private void validation(final String firstNameValue, final String lastNameValue, final String emailValue,
                             final String passwordValue) {
+        MyCustomMethods.closeKeyboard(this);
         // daca toate campurile sunt valide
         if (allFieldsAreValid(firstNameValue, lastNameValue, emailValue, passwordValue)) {
             // metoda FireBase de sign up
@@ -81,22 +84,21 @@ public class RegisterActivity extends AppCompatActivity {
                     if (firebaseUser != null) {
                         firebaseUser.sendEmailVerification().addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
-                                final User newUser = new User(firstNameValue, lastNameValue, emailValue);
+                                final User newUser = new User(firebaseUser.getUid(), firstNameValue, lastNameValue,
+                                        emailValue);
 
                                 MyCustomMethods.showMessage(RegisterActivity.this,
                                         "Please verify your email", Toast.LENGTH_SHORT);
+
                                 databaseReference.child("UsersList").child(newUser.getId()).setValue(newUser);
 
-                                // cream un intent ce permite trecerea in activitatea de log in
-                                final Intent intent = new Intent(RegisterActivity.this,
-                                        LoginActivity.class);
-                                // afisam mesaj de succes
-                                MyCustomMethods.showMessage(RegisterActivity.this,
-                                        "Registration successful", Toast.LENGTH_SHORT);
-                                // incheiem activitatea curenta
-                                finish();
-                                // incepem activitatea de log in
-                                startActivity(intent);
+                                MyCustomMethods.saveUserToSharedPreferences(preferences, newUser, "currentUser");
+
+                                fbAuth.signOut();
+
+                                MyCustomMethods
+                                        .goToActivityInDirectionAndCloseCurrentOne(RegisterActivity.this,
+                                                LoginActivity.class, "right");
                             } else {
                                 MyCustomMethods.showMessage(RegisterActivity.this,
                                         "Email already exists", Toast.LENGTH_SHORT);
@@ -119,52 +121,6 @@ public class RegisterActivity extends AppCompatActivity {
         else {
             getValidationError(firstNameValue, lastNameValue, emailValue, passwordValue);
         }
-
-//        // daca atat emailul, cat si parola nu contin niciun caracter
-//        else if (emailValue.isEmpty() && passwordValue.isEmpty()) {
-//            // afisam 'eroarea'
-//            MyCustomMethods.showMessage(RegisterActivity.this, getResources().getString(R.string.signup_error2),
-//                    Toast.LENGTH_SHORT);
-//        }
-//        // daca doar emailul nu contine niciun caracter
-//        else if (emailValue.isEmpty()) {
-//            // afisam 'eroarea'
-//            MyCustomMethods.showMessage(RegisterActivity.this, getResources().getString(R.string.signup_error3),
-//                    Toast.LENGTH_SHORT);
-//            // resetam parola
-//            MyCustomMethods.emptyField(passwordField);
-//        }
-//        // daca doar parola nu contine caractere
-//        else if (passwordValue.isEmpty()) {
-//            // afisam 'eroarea'
-//            MyCustomMethods.showMessage(RegisterActivity.this, getResources().getString(R.string.signup_error4),
-//                    Toast.LENGTH_SHORT);
-//        }
-//        // daca parola este prea scurta si email-ul nu este valid
-//        else if (passwordValue.length() < viewModel.getMinimumNumberOfPasswordCharacters() &&
-//                !MyCustomMethods.emailAddressIsValid(emailValue)) {
-//            // afisam 'eroarea'
-//            MyCustomMethods.showMessage(RegisterActivity.this, getResources().getString(R.string.signup_error5),
-//                    Toast.LENGTH_SHORT);
-//            // resetam parola
-//            MyCustomMethods.emptyField(passwordField);
-//        }
-//        // daca email-ul nu este valid
-//        else if (!MyCustomMethods.emailAddressIsValid(emailValue)) {
-//            // afisam 'eroarea'
-//            MyCustomMethods.showMessage(RegisterActivity.this, getResources().getString(R.string.signup_error6),
-//                    Toast.LENGTH_SHORT);
-//            // resetam parola
-//            MyCustomMethods.emptyField(passwordField);
-//        }
-//        // daca parola este prea scurta
-//        else {
-//            // afisam 'eroarea'
-//            MyCustomMethods.showMessage(RegisterActivity.this, getResources().getString(R.string.signup_error7),
-//                    Toast.LENGTH_SHORT);
-//            // resetam parola
-//            MyCustomMethods.emptyField(passwordField);
-//        }
     }
 
     private boolean allFieldsAreValid(final String firstNameValue, final String lastNameValue, final String emailValue,
@@ -177,33 +133,29 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void getValidationError(final String firstNameValue, final String lastNameValue, final String emailValue,
                                     final String passwordValue) {
-        if (firstNameValue.isEmpty() && lastNameValue.isEmpty() && emailValue.isEmpty() && passwordValue.isEmpty()) {
-            MyCustomMethods.showMessage(RegisterActivity.this, "Please fill all the fields", Toast.LENGTH_SHORT);
-        } else if (firstNameValue.isEmpty()) {
-            MyCustomMethods.showMessage(RegisterActivity.this, "First name should not be empty", Toast.LENGTH_SHORT);
-        } else if (lastNameValue.isEmpty()) {
-            MyCustomMethods.showMessage(RegisterActivity.this, "Last name should not be empty", Toast.LENGTH_SHORT);
-        } else if (emailValue.isEmpty()) {
-            // afisam 'eroarea'
-            MyCustomMethods.showMessage(RegisterActivity.this, getResources().getString(R.string.signup_error3),
-                    Toast.LENGTH_SHORT);
-            // resetam parola
-            MyCustomMethods.emptyField(passwordField);
-        } else if (passwordValue.isEmpty()) {
-            // afisam 'eroarea'
-            MyCustomMethods.showMessage(RegisterActivity.this, getResources().getString(R.string.signup_error4),
-                    Toast.LENGTH_SHORT);
+        if (firstNameValue.isEmpty() || lastNameValue.isEmpty() || emailValue.isEmpty() || passwordValue.isEmpty()) {
+            if (!String.valueOf(passwordField.getText()).trim().isEmpty()) {
+                MyCustomMethods.emptyField(passwordField);
+            }
+
+            MyCustomMethods.showMessage(RegisterActivity.this, "No field should be empty", Toast.LENGTH_SHORT);
         } else if (firstNameValue.length() < MyCustomVariables.getMinimumNumberOfNameCharacters() &&
                 lastNameValue.length() < MyCustomVariables.getMinimumNumberOfNameCharacters() &&
                 !MyCustomMethods.emailAddressIsValid(emailValue) &&
                 passwordValue.length() < MyCustomVariables.getMinimumNumberOfPasswordCharacters()) {
             MyCustomMethods.showMessage(RegisterActivity.this, "No field is valid", Toast.LENGTH_SHORT);
-        } else if (firstNameValue.length() < MyCustomVariables.getMinimumNumberOfNameCharacters()) {
-            MyCustomMethods.showMessage(RegisterActivity.this, "Fist name should have at least" + " " +
+        } else if (firstNameValue.length() < MyCustomVariables.getMinimumNumberOfNameCharacters() ||
+                lastNameValue.length() < MyCustomVariables.getMinimumNumberOfNameCharacters()) {
+            MyCustomMethods.showMessage(RegisterActivity.this, "Name fields should have at least" + " " +
                     MyCustomVariables.getMinimumNumberOfNameCharacters() + " " + "characters", Toast.LENGTH_SHORT);
-        } else if (lastNameValue.length() < MyCustomVariables.getMinimumNumberOfNameCharacters()) {
-            MyCustomMethods.showMessage(RegisterActivity.this, "Last name should have at least" + " " +
-                    MyCustomVariables.getMinimumNumberOfNameCharacters() + " " + "characters", Toast.LENGTH_SHORT);
+        } else if (firstNameValue.charAt(0) < 65 || firstNameValue.charAt(0) > 90 ||
+                lastNameValue.charAt(0) < 65 || lastNameValue.charAt(0) > 90) {
+            MyCustomMethods.showMessage(RegisterActivity.this,
+                    "Name fields should start with uppercase letter", Toast.LENGTH_SHORT);
+        } else if (!MyCustomMethods.nameIsValid(firstNameValue, MyCustomVariables.getMinimumNumberOfNameCharacters()) ||
+                !MyCustomMethods.nameIsValid(lastNameValue, MyCustomVariables.getMinimumNumberOfNameCharacters())) {
+            MyCustomMethods.showMessage(RegisterActivity.this, "Name fields are not valid",
+                    Toast.LENGTH_SHORT);
         } else if (!MyCustomMethods.emailAddressIsValid(emailValue)) {
             // afisam 'eroarea'
             MyCustomMethods.showMessage(RegisterActivity.this, getResources().getString(R.string.signup_error6),

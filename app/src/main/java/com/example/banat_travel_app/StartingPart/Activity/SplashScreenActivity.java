@@ -1,22 +1,31 @@
 package com.example.banat_travel_app.StartingPart.Activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import com.example.banat_travel_app.MainPart.MainActivity;
+import com.example.banat_travel_app.Models.User;
 import com.example.banat_travel_app.MyCustomMethods;
 import com.example.banat_travel_app.R;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreenActivity extends AppCompatActivity {
+    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyCustomMethods.hideStatusBar(this);
         setContentView(R.layout.activity_splash_screen);
+        setPreferences();
         initializeSplashScreen();
+    }
+
+    private void setPreferences() {
+        preferences = getSharedPreferences("BANAT_TRAVEL", MODE_PRIVATE);
     }
 
     private void initializeSplashScreen() {
@@ -24,23 +33,26 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public class Launcher extends Thread {
-        private final FirebaseAuth auth = FirebaseAuth.getInstance();
-
         public void run() {
+            boolean authenticatedUserExists = false;
+
             try {
                 sleep(1500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-//            UserDetails details = retrieveUserFromSharedPreferences();
-            Intent intent;
+            if (MyCustomMethods.sharedPreferencesContainsKey(preferences, "authenticatedUser")) {
+                final User authenticatedUser = MyCustomMethods.retrieveUserFromSharedPreferences(preferences,
+                        "authenticatedUser");
 
-//            if(details != null)
-//                intent = new Intent(ActivitySplashScreen.this, ActivityConnectAccessHome.class);
-//            else intent = new Intent(ActivitySplashScreen.this, ActivityLogin.class);
+                if (authenticatedUser != null) {
+                    authenticatedUserExists = true;
+                    Log.d("authenticatedUser", authenticatedUser.toString());
+                }
+            }
 
-            intent = new Intent(SplashScreenActivity.this, auth.getCurrentUser() != null ?
+            final Intent intent = new Intent(SplashScreenActivity.this, authenticatedUserExists ?
                     MainActivity.class : LoginActivity.class);
 
             startActivity(intent);

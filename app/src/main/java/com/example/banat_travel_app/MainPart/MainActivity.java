@@ -1,7 +1,9 @@
 package com.example.banat_travel_app.MainPart;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -12,12 +14,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.banat_travel_app.CountySelector;
+import com.example.banat_travel_app.Models.User;
 import com.example.banat_travel_app.MyCustomMethods;
+import com.example.banat_travel_app.MyCustomVariables;
 import com.example.banat_travel_app.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPreferences preferences;
     private final FragmentManager fragmentManager = getSupportFragmentManager();
     private BottomNavigationView bottomNavigationView;
     private MainPartViewModel viewModel;
@@ -31,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
         setVariables();
         setFragments();
         setBottomNavigationListener(navListener);
+
+        if (MyCustomMethods.sharedPreferencesContainsKey(preferences, "authenticatedUser")) {
+            final User authenticatedUser = MyCustomMethods.retrieveUserFromSharedPreferences(preferences,
+                    "authenticatedUser");
+            Log.d("authenticatedUser", authenticatedUser.toString());
+        }
     }
 
     @Override
@@ -41,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setVariables() {
+        preferences = getSharedPreferences(MyCustomVariables.getSharedPreferencesFileName(), MODE_PRIVATE);
         viewModel = new ViewModelProvider(this).get(MainPartViewModel.class);
         bottomNavigationView = findViewById(R.id.main_activity_bottom_navigation_view);
         fragmentLayout = findViewById(R.id.main_activity_main_fragment);
@@ -51,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFragments() {
+        fragmentManager.beginTransaction()
+                .add(fragmentLayout.getId(), viewModel.getSettingsFragment(), "settings_fragment")
+                .hide(viewModel.getSettingsFragment())
+                .commit();
+        fragmentManager.beginTransaction()
+                .add(fragmentLayout.getId(), viewModel.getProfileFragment(), "profile_fragment")
+                .hide(viewModel.getProfileFragment())
+                .commit();
         fragmentManager.beginTransaction()
                 .add(fragmentLayout.getId(), viewModel.getFavoritesFragment(), "favorites_fragment")
                 .hide(viewModel.getFavoritesFragment())
@@ -64,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
     private void setBottomNavigationSelectedItem() {
         bottomNavigationView.setSelectedItemId(viewModel.getSelectedFragment() == viewModel.getHomeFragment() ?
                 0 : viewModel.getSelectedFragment() == viewModel.getFavoritesFragment() ?
-                1 : 2);
+                1 : viewModel.getSelectedFragment() == viewModel.getProfileFragment() ?
+                2 : 3);
     }
 
     private void setBottomNavigationListener(NavigationBarView.OnItemSelectedListener listener) {
@@ -75,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
             .OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            // de incercat cu ternary operator
+
+
+
+            //
+
             if (item.getItemId() == R.id.nav_home) {
                 if (viewModel.getSelectedFragment() != viewModel.getHomeFragment()) {
                     fragmentManager.beginTransaction()
@@ -94,6 +121,14 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.nav_profile) {
                 Intent intent = new Intent(MainActivity.this, CountySelector.class);
                 startActivity(intent);
+            } else if (item.getItemId() == R.id.nav_settings) {
+                if (viewModel.getSelectedFragment() != viewModel.getSettingsFragment()) {
+                    fragmentManager.beginTransaction()
+                            .hide(viewModel.getSelectedFragment())
+                            .show(viewModel.getSettingsFragment())
+                            .commit();
+                    viewModel.setSelectedFragment(viewModel.getSettingsFragment());
+                }
             }
 
             return true;

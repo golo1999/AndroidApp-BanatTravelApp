@@ -5,6 +5,7 @@
     <string name="login_password"> Password </string>
     <string name="login_no_account"> Don\'t have an account? </string>
     <string name="login_button"> Log in </string>
+    <string name="remaining_attempts">Remaining attempts</string>
     <string name="signup_welcome"> Create a new account </string>
     <string name="signup_button"> Register </string>
     <string name="signup_account"> Already have an account? </string>

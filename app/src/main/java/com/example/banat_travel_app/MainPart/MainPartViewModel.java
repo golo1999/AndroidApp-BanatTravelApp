@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel;
 public class MainPartViewModel extends ViewModel {
     private final HomeFragment homeFragment = new HomeFragment();
     private final FavoritesFragment favoritesFragment = new FavoritesFragment();
+    private final ProfileFragment profileFragment = new ProfileFragment();
+    private final SettingsFragment settingsFragment = new SettingsFragment();
     private Fragment selectedFragment = homeFragment;
 
     public HomeFragment getHomeFragment() {
@@ -14,6 +16,14 @@ public class MainPartViewModel extends ViewModel {
 
     public FavoritesFragment getFavoritesFragment() {
         return favoritesFragment;
+    }
+
+    public ProfileFragment getProfileFragment() {
+        return profileFragment;
+    }
+
+    public SettingsFragment getSettingsFragment() {
+        return settingsFragment;
     }
 
     public Fragment getSelectedFragment() {

@@ -20,7 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ShoppingCart extends AppCompatActivity // clasa in care se descrie functionalitatea cosului de cumparaturi
 {
-
     private RecyclerView rView;
     private DatabaseReference myRef;
     private FirebaseAuth fbAuth;

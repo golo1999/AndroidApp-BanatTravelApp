@@ -2,17 +2,38 @@ package com.example.banat_travel_app.Models;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 
-public class User {
-    private final String id;
+public class User implements Serializable {
+    private String id;
     private String firstName;
     private String lastName;
     private String email;
     private String image;
     private Map<String, Integer> ratingsList;
     private Map<String, String> reviewsList;
+    private boolean rememberMeChecked = false;
+
+    public User() {
+
+    }
+
+    public User(String id, String firstName, String lastName, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public User(String id, String firstName, String lastName, String email, boolean rememberMeChecked) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.rememberMeChecked = rememberMeChecked;
+    }
 
     public User(String firstName, String lastName, String email, String image, Map<String, Integer> ratingsList,
                 Map<String, String> reviewsList) {
@@ -25,15 +46,12 @@ public class User {
         this.reviewsList = reviewsList;
     }
 
-    public User(String firstName, String lastName, String email) {
-        this.id = String.valueOf(UUID.randomUUID());
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
-
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -84,6 +102,14 @@ public class User {
         this.reviewsList = reviewsList;
     }
 
+    public boolean isRememberMeChecked() {
+        return rememberMeChecked;
+    }
+
+    public void setRememberMeChecked(boolean rememberMeChecked) {
+        this.rememberMeChecked = rememberMeChecked;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -95,6 +121,7 @@ public class User {
                 ", image='" + image + '\'' +
                 ", ratingsList=" + ratingsList +
                 ", reviewsList=" + reviewsList +
+                ", rememberMeChecked=" + rememberMeChecked +
                 '}';
     }
 }

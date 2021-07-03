@@ -1,28 +1,40 @@
 package com.example.banat_travel_app.StartingPart.Activity;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.banat_travel_app.MainPart.MainActivity;
+import com.example.banat_travel_app.Models.User;
 import com.example.banat_travel_app.MyCustomMethods;
 import com.example.banat_travel_app.MyCustomVariables;
 import com.example.banat_travel_app.R;
 import com.example.banat_travel_app.StartingPart.ViewModel.StartingPartViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
-    private StartingPartViewModel viewModel;
+    private SharedPreferences preferences;
     private final FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+    private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private StartingPartViewModel viewModel;
     private EditText emailField;
     private EditText passwordField;
+    private CheckBox rememberMe;
     private Button logInButton;
     private TextView signUpText;
     private TextView forgotPassword;
@@ -35,8 +47,9 @@ public class LoginActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_login);
         setVariables();
-        setRemainingAttemptsText("Remaining attempts: " + viewModel.getRemainingAttempts());
         setOnClickListeners();
+        setRemainingAttemptsText(getResources().getString(R.string.remaining_attempts) +
+                ": " + viewModel.getRemainingAttempts());
     }
 
     @Override
@@ -44,11 +57,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    // metoda pentru atribuirea variabilelor
     private void setVariables() {
+        preferences = getSharedPreferences(MyCustomVariables.getSharedPreferencesFileName(), MODE_PRIVATE);
         viewModel = new ViewModelProvider(this).get(StartingPartViewModel.class);
         emailField = findViewById(R.id.login_email);
         passwordField = findViewById(R.id.login_password);
+        rememberMe = findViewById(R.id.login_remember_me);
         logInButton = findViewById(R.id.login_button);
         signUpText = findViewById(R.id.login_sign_up);
         forgotPassword = findViewById(R.id.login_forgot_password);
@@ -60,49 +74,93 @@ public class LoginActivity extends AppCompatActivity {
                 .goToActivityInDirection(LoginActivity.this, ForgotPasswordActivity.class,
                         "right"));
 
-        // apelam metoda de validare daca apasam butonul de autentificare
+        // calling the authentication validation method
         logInButton.setOnClickListener(v -> validation(String.valueOf(emailField.getText()).trim(),
-                String.valueOf(passwordField.getText()).trim()));
+                String.valueOf(passwordField.getText()).trim(), rememberMe.isChecked()));
 
+        // redirecting to the registration activity
         signUpText.setOnClickListener(v -> MyCustomMethods
                 .goToActivityInDirection(LoginActivity.this, RegisterActivity.class,
                         "left"));
     }
 
-    // metoda pentru validare
-    private void validation(final String email, final String password) {
-        // incercam sa autentificam utilizatorul in cazul in care email-ul este valid
-        // si parola are cel putin 7 caractere,
+    // authentication validation method
+    private void validation(final String email, final String password, final boolean rememberMeChecked) {
+        MyCustomMethods.closeKeyboard(this);
+        // trying to authenticate if all the fields are valid
         if (MyCustomMethods.emailAddressIsValid(email) &&
                 password.length() >= MyCustomVariables.getMinimumNumberOfPasswordCharacters()) {
             fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                // daca atat email-ul, cat si parola corespund, se face log in si
-                // se trece la activitatea urmatoare
+                // redirecting to the main activity if the credentials match
                 if (task.isSuccessful()) {
-                    final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    MyCustomMethods.showMessage(LoginActivity.this, "Login successful",
-                            Toast.LENGTH_SHORT);
-                    // incheiam activitatea de log in
-                    finish();
-                    // incepem activitatea urmatoare
-                    startActivity(intent);
+                    final FirebaseUser currentUser = fbAuth.getCurrentUser();
+
+                    if (currentUser != null) {
+                        if (currentUser.isEmailVerified()) {
+                            if (rememberMeChecked) {
+                                databaseReference.child("UsersList").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists() && snapshot.hasChildren()) {
+                                            for (DataSnapshot user : snapshot.getChildren()) {
+                                                if (String.valueOf(user.getKey()).equals(currentUser.getUid())) {
+                                                    if (user.hasChild("rememberMeChecked") &&
+                                                            String.valueOf(user.child(currentUser.getUid())
+                                                                    .child("rememberMeChecked").getValue())
+                                                                    .equals("false")) {
+                                                        databaseReference.child("UsersList").child(currentUser.getUid())
+                                                                .child("rememberMeChecked").setValue(true);
+                                                    }
+
+                                                    final User currentUser1 = user.getValue(User.class);
+
+                                                    if (currentUser1 != null) {
+                                                        // saving the recently authenticated user to SharedPreferences
+                                                        MyCustomMethods
+                                                                .saveUserToSharedPreferences(preferences, currentUser1,
+                                                                        "authenticatedUser");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+
+                            saveUserToDatabaseIfItsDetailsDoNotExist(currentUser);
+
+                            MyCustomMethods.showMessage(LoginActivity.this, "Login successful",
+                                    Toast.LENGTH_SHORT);
+                            MyCustomMethods
+                                    .goToActivityWithFadeAnimationAndCloseCurrentOne(LoginActivity.this,
+                                            MainActivity.class);
+                        } else {
+                            MyCustomMethods.showMessage(LoginActivity.this,
+                                    "Please verify your email first", Toast.LENGTH_SHORT);
+                        }
+                    }
                 }
-                // in cazul in care atat email-ul, cat si parola sunt valide,
-                // dar nu corespund informatiilor din baza de date Firebase
+                // if the email is valid and the password is long enough, but the credentials don't match
                 else {
                     MyCustomMethods.showMessage(LoginActivity.this,
                             getResources().getString(R.string.incorrect_credentials), Toast.LENGTH_LONG);
-                    // stergem parola
-                    MyCustomMethods.emptyField(passwordField);
-                    // decrementam variabila ce contorizeaza numarul de incercari
-                    viewModel.decrementNumberOfRemainingAttempts();
-                    // setam noul numar de incercari
-                    setRemainingAttemptsText("Remaining attempts: " + viewModel.getRemainingAttempts());
 
-                    // daca nu mai avem incercari disponibile pentru sesiunea curenta
+                    MyCustomMethods.emptyField(passwordField);
+                    // decrementing the number of remaining attempts
+                    viewModel.decrementNumberOfRemainingAttempts();
+                    // setting the new number of remaining attempts
+                    setRemainingAttemptsText(getResources().getString(R.string.remaining_attempts) +
+                            ": " + viewModel.getRemainingAttempts());
+
+                    // if there are no more remaining attempts for the current session
                     if (viewModel.getRemainingAttempts() == 0) {
                         enableOrDisableFields(false);
-                        // stergem email-ul
+
                         MyCustomMethods.emptyField(emailField);
 
                         setCountdownTimer(MyCustomVariables.getNumberOfWaitingMilliseconds(),
@@ -111,51 +169,53 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
-        // in cazul in care nu se respecta conditia de log in
+        // if not all the fields are valid
         else {
-            // daca atat email-ul, cat si parola nu contin niciun caracter
+            // if both email and password are empty
             if (email.isEmpty() && password.isEmpty()) {
                 MyCustomMethods.showMessage(LoginActivity.this,
                         "Email and password should not be empty", Toast.LENGTH_SHORT);
             }
-            // daca email-ul nu contine niciun caracter
+            // if the email is empty
             else if (email.isEmpty()) {
                 MyCustomMethods.showMessage(LoginActivity.this, "Email should not be empty",
                         Toast.LENGTH_SHORT);
                 MyCustomMethods.emptyField(passwordField);
             }
-            // daca parola nu contine niciun caracter
+            // if the password is empty
             else if (password.isEmpty()) {
                 MyCustomMethods.showMessage(LoginActivity.this, "Password should not be empty",
                         Toast.LENGTH_SHORT);
             }
-            // daca email-ul nu are forma valida si parola este prea scurta
+            // if the email isn't valid and the password is too short
             else if (!MyCustomMethods.emailAddressIsValid(email) &&
                     password.length() < MyCustomVariables.getMinimumNumberOfPasswordCharacters()) {
                 MyCustomMethods.showMessage(LoginActivity.this,
                         "Both email address and password are not valid", Toast.LENGTH_SHORT);
                 MyCustomMethods.emptyField(passwordField);
-                // daca email-ul nu are forma valida, dar parola este in regula
-            } else if (!MyCustomMethods.emailAddressIsValid(email)) {
+            }
+            // if the email isn't valid
+            else if (!MyCustomMethods.emailAddressIsValid(email)) {
                 MyCustomMethods.showMessage(LoginActivity.this, "Email address is not valid",
                         Toast.LENGTH_SHORT);
                 MyCustomMethods.emptyField(passwordField);
             }
-            // daca parola este prea scurta, dar email-ul este in regula
+            // if the password is too short
             else {
                 MyCustomMethods.showMessage(LoginActivity.this, "Password should have at least " +
                         MyCustomVariables.getMinimumNumberOfPasswordCharacters() + " characters", Toast.LENGTH_SHORT);
                 MyCustomMethods.emptyField(passwordField);
             }
-            // decrementam variabila ce contorizeaza numarul de incercari
+            // decrementing the number of remaining attempts
             viewModel.decrementNumberOfRemainingAttempts();
-            // setam noul numar de incercari
-            setRemainingAttemptsText("Remaining attempts: " + viewModel.getRemainingAttempts());
+            // setting the new number of remaining attempts
+            setRemainingAttemptsText(getResources().getString(R.string.remaining_attempts) +
+                    ": " + viewModel.getRemainingAttempts());
 
-            // daca nu mai avem incercari disponibile pentru sesiunea curenta
+            // if there are no more remaining attempts for the current session
             if (viewModel.getRemainingAttempts() == 0) {
                 enableOrDisableFields(false);
-                // stergem email-ul
+
                 MyCustomMethods.emptyField(emailField);
 
                 setCountdownTimer(MyCustomVariables.getNumberOfWaitingMilliseconds(),
@@ -164,22 +224,22 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // setam un countdown de 30 de secunde, la finalul caruia vom avea din nou 5 incercari
+    // setting a 30 seconds countdown before resetting the number of remaining attempts
     private void setCountdownTimer(final int numberOfSeconds, final int countDownInterval) {
         new CountDownTimer(numberOfSeconds, countDownInterval) {
-            // afiseaza countdown-ul dupa trecerea fiecarei secunde
             @Override
-            public void onTick(long millisUntilFinished) {
+            public void onTick(final long millisUntilFinished) {
+                // showing the countdown after each second passes
                 setRemainingAttemptsText("Next attempt in " + millisUntilFinished / countDownInterval + " seconds");
             }
 
-            // atunci cand timer-ul ajunge la 0, posibilitatea de log in devine din nou disponibila
-            // si avem inca 5 incercari
             @Override
             public void onFinish() {
+                // resetting the number of remaining attempts when the countdown is over
                 enableOrDisableFields(true);
                 viewModel.resetRemainingAttempts();
-                setRemainingAttemptsText("Remaining attempts: " + viewModel.getRemainingAttempts());
+                setRemainingAttemptsText(getResources().getString(R.string.remaining_attempts) +
+                        ": " + viewModel.getRemainingAttempts());
             }
         }.start();
     }
@@ -192,5 +252,41 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setRemainingAttemptsText(final String text) {
         remainingAttemptsText.setText(text);
+    }
+
+    private void saveUserToDatabaseIfItsDetailsDoNotExist(final FirebaseUser currentUser) {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean userDetailsExist = false;
+
+                // looping through the database and searching if the current user already has his/her details
+                if (snapshot.exists() && snapshot.hasChild("UsersList")) {
+                    if (snapshot.child("UsersList").hasChildren()) {
+                        for (final DataSnapshot user : snapshot.child("UsersList").getChildren()) {
+                            if (String.valueOf(user.getKey()).equals(currentUser.getUid())) {
+                                userDetailsExist = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // if the user doesn't have his/her details, we manually set them from the user
+                // that is saved into SharedPreferences
+                if (!userDetailsExist) {
+                    final User userFromSharedPreferences = MyCustomMethods
+                            .retrieveUserFromSharedPreferences(preferences, "currentUser");
+                    databaseReference.child("UsersList")
+                            .child(userFromSharedPreferences.getId())
+                            .setValue(userFromSharedPreferences);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
